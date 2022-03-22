@@ -270,13 +270,13 @@ void AppVTClientDoProcess(const ISOVT_EVENT_DATA_T* psEvData)
 
 	CYCLE_8A.T2=3000;
 	CYCLE_8A(I1);
-	if (CYCLE_8A.Q0) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700,  500, 0);
-	if (CYCLE_8A.Q1) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 840, 1000, 0);
-	if (CYCLE_8A.Q2) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700, 500, 0);
-	if (CYCLE_8A.Q3) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 830,  500, 0);
-	if (CYCLE_8A.Q4) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 940, 1000, 0);
-	if (CYCLE_8A.Q5) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1030, 500, 0);
-	if (CYCLE_8A.Q6) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1100,  500, 0);
+	if (CYCLE_8A.Q0) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700,  250, 0);
+	if (CYCLE_8A.Q1) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 840, 500, 0);
+	if (CYCLE_8A.Q2) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700, 250, 0);
+	if (CYCLE_8A.Q3) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 830,  250, 0);
+	if (CYCLE_8A.Q4) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 940, 500, 0);
+	if (CYCLE_8A.Q5) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1030, 250, 0);
+	if (CYCLE_8A.Q6) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1100,  250, 0);
 
 
 
@@ -329,27 +329,34 @@ void VTC_handleSoftkeysAndButton_Q2(const struct ButtonActivation_S *pButtonData
 
 	}
 }
-
+//----------------------------------------------------------------------------------------------------
+RS RS3;
+TON TON3;
 void VTC_handleSoftkeysAndButton_Q3(const struct ButtonActivation_S *pButtonData) {
 
+	TON3.PT = 3000;
 	switch (pButtonData->keyActivationCode) {
 
 
-	case BUTTON_STATE_PRESSED:
+
 	case BUTTON_STATE_HELD:
-		gpio_set_level(GPIO_Q3, 1);
+		TON3(true);
+		RS3(TON3.Q, false);
 		break;
 
+	case BUTTON_STATE_PRESSED:
+		TON3(false);
+		RS3(false, true);
+		break;
 
 	case BUTTON_STATE_RELEASED:
-	case BUTTON_STATE_ABORTED:
-		gpio_set_level(GPIO_Q3, 0);
+    case BUTTON_STATE_ABORTED:
 		break;
 
-
 	}
+	gpio_set_level(GPIO_Q3, RS3.Q1);
 }
-
+//------------------------------------------------------------------------------------------------------------
 void VTC_handleSoftkeysAndButton_Q4(const struct ButtonActivation_S *pButtonData) {
 
 	switch (pButtonData->keyActivationCode) {
