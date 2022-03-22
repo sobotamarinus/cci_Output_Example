@@ -272,8 +272,8 @@ void AppVTClientDoProcess(const ISOVT_EVENT_DATA_T* psEvData)
 	CYCLE_8A(I1);
 	if (CYCLE_8A.Q0) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700,  500, 0);
 	if (CYCLE_8A.Q1) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 840, 1000, 0);
-	if (CYCLE_8A.Q2) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 930, 500, 0);
-	if (CYCLE_8A.Q3) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 800,  500, 0);
+	if (CYCLE_8A.Q2) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 700, 500, 0);
+	if (CYCLE_8A.Q3) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 830,  500, 0);
 	if (CYCLE_8A.Q4) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 940, 1000, 0);
 	if (CYCLE_8A.Q5) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1030, 500, 0);
 	if (CYCLE_8A.Q6) IsoVtcCmd_CtrlAudioSignal(psEvData->u8Instance, 1, 1100,  500, 0);
@@ -289,17 +289,18 @@ void VTC_handleSoftkeysAndButton_Q1(const struct ButtonActivation_S *pButtonData
 	switch (pButtonData->keyActivationCode) {
 
 
-	case BUTTON_STATE_PRESSED:
+
 	case BUTTON_STATE_HELD:
 		RS1(true, false);
 		break;
 
-
-	case BUTTON_STATE_RELEASED:
-	case BUTTON_STATE_ABORTED:
+	case BUTTON_STATE_PRESSED:
 		RS1(false, true);
 		break;
 
+	case BUTTON_STATE_RELEASED:
+    case BUTTON_STATE_ABORTED:
+		break;
 
 	}
 	gpio_set_level(GPIO_Q1, RS1.Q1);
